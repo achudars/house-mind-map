@@ -4,7 +4,9 @@ A modern, interactive Next.js application featuring a house mind map with a cent
 
 ## Preview
 
-![House Mind Map](house-mind-map.png)
+![House Mind Map](house-mind-map-1.png)
+
+![House Mind Map](house-mind-map-2.png)
 
 ## Features
 
