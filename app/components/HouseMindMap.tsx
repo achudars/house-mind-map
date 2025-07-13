@@ -8,8 +8,7 @@ import {
   Bath,
   ChefHat,
   Bed,
-  Sofa,
-  Wifi
+  Sofa
 } from 'lucide-react'
 
 interface Room {
@@ -161,8 +160,8 @@ export default function HouseMindMap() {
               <div className="relative group">
                 <div
                   className={`w-20 h-20 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
-                      ? 'scale-110 shadow-2xl'
-                      : 'scale-100 hover:scale-105'
+                    ? 'scale-110 shadow-2xl'
+                    : 'scale-100 hover:scale-105'
                     } ${isSelected
                       ? 'bg-gradient-to-br from-blue-400 to-blue-600 ring-4 ring-blue-300 ring-opacity-50'
                       : 'bg-white hover:bg-gray-50'
@@ -176,8 +175,8 @@ export default function HouseMindMap() {
 
                 <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
                   <span className={`text-sm font-semibold tracking-wide transition-all duration-300 ${isSelected || isHovered
-                      ? 'text-white text-shadow-lg scale-105'
-                      : 'text-gray-300'
+                    ? 'text-white text-shadow-lg scale-105'
+                    : 'text-gray-300'
                     }`}>
                     {room.name}
                   </span>
@@ -202,13 +201,6 @@ export default function HouseMindMap() {
             </div>
           </div>
         )}
-
-        {/* Network signal indicator */}
-        <div className="absolute top-4 right-4">
-          <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-3 shadow-xl border border-white border-opacity-20">
-            <Wifi size={20} className="text-white" />
-          </div>
-        </div>
       </div>
     </div>
   )
