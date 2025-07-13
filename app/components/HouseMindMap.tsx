@@ -36,11 +36,25 @@ export default function HouseMindMap() {
   const centerY = 300
   const radius = 200
 
+  // Utility function to ensure consistent rounding and prevent hydration mismatches
+  const roundCoordinate = (value: number): number => {
+    return Math.round(value * 100) / 100
+  }
+
   const getRoomPosition = (angle: number) => {
     const radian = (angle * Math.PI) / 180
     return {
-      x: centerX + radius * Math.cos(radian),
-      y: centerY + radius * Math.sin(radian),
+      x: roundCoordinate(centerX + radius * Math.cos(radian)),
+      y: roundCoordinate(centerY + radius * Math.sin(radian)),
+    }
+  }
+
+  const getRoomPositionVertical = (index: number) => {
+    const verticalSpacing = 140 // Increased spacing for better text visibility
+    const startY = 120 // Moved up slightly to fit better
+    return {
+      x: 140, // Moved further right to give more space for text
+      y: startY + (index * verticalSpacing),
     }
   }
 
@@ -49,10 +63,10 @@ export default function HouseMindMap() {
     const outerRadius = radius - 40
     const radian = (angle * Math.PI) / 180
 
-    const startX = centerX + innerRadius * Math.cos(radian)
-    const startY = centerY + innerRadius * Math.sin(radian)
-    const endX = centerX + outerRadius * Math.cos(radian)
-    const endY = centerY + outerRadius * Math.sin(radian)
+    const startX = roundCoordinate(centerX + innerRadius * Math.cos(radian))
+    const startY = roundCoordinate(centerY + innerRadius * Math.sin(radian))
+    const endX = roundCoordinate(centerX + outerRadius * Math.cos(radian))
+    const endY = roundCoordinate(centerY + outerRadius * Math.sin(radian))
 
     return `M ${startX} ${startY} L ${endX} ${endY}`
   }
@@ -62,12 +76,12 @@ export default function HouseMindMap() {
       <div className="relative">
         <svg
           width="800"
-          height="600"
-          viewBox="0 0 800 600"
-          className="drop-shadow-2xl"
+          height={selectedRoom ? "900" : "600"}
+          viewBox={selectedRoom ? "0 0 800 900" : "0 0 800 600"}
+          className="drop-shadow-2xl transition-all duration-500"
         >
-          {/* Connection lines */}
-          {rooms.map((room) => (
+          {/* Connection lines - only show when no room is selected */}
+          {!selectedRoom && rooms.map((room) => (
             <path
               key={`line-${room.id}`}
               d={getConnectionPath(room.angle)}
@@ -81,34 +95,38 @@ export default function HouseMindMap() {
             />
           ))}
 
-          {/* Circular grid */}
-          <circle
-            cx={centerX}
-            cy={centerY}
-            r="120"
-            fill="none"
-            stroke="#374151"
-            strokeWidth="1"
-            strokeDasharray="2,4"
-            opacity="0.3"
-          />
-          <circle
-            cx={centerX}
-            cy={centerY}
-            r="160"
-            fill="none"
-            stroke="#374151"
-            strokeWidth="1"
-            strokeDasharray="2,4"
-            opacity="0.2"
-          />
+          {/* Circular grid - only show when no room is selected */}
+          {!selectedRoom && (
+            <>
+              <circle
+                cx={centerX}
+                cy={centerY}
+                r="120"
+                fill="none"
+                stroke="#374151"
+                strokeWidth="1"
+                strokeDasharray="2,4"
+                opacity="0.3"
+              />
+              <circle
+                cx={centerX}
+                cy={centerY}
+                r="160"
+                fill="none"
+                stroke="#374151"
+                strokeWidth="1"
+                strokeDasharray="2,4"
+                opacity="0.2"
+              />
+            </>
+          )}
 
-          {/* Small decorative dots */}
-          {rooms.map((room) => {
+          {/* Small decorative dots - only show when no room is selected */}
+          {!selectedRoom && rooms.map((room) => {
             const midRadius = 140
             const radian = (room.angle * Math.PI) / 180
-            const dotX = centerX + midRadius * Math.cos(radian)
-            const dotY = centerY + midRadius * Math.sin(radian)
+            const dotX = roundCoordinate(centerX + midRadius * Math.cos(radian))
+            const dotY = roundCoordinate(centerY + midRadius * Math.sin(radian))
 
             return (
               <circle
@@ -123,25 +141,27 @@ export default function HouseMindMap() {
           })}
         </svg>
 
-        {/* Central home icon */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="relative">
-            <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center animate-float">
-              <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center shadow-inner">
-                <Home size={48} className="text-white drop-shadow-lg" />
+        {/* Central home icon - only show when no room is selected */}
+        {!selectedRoom && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center animate-float">
+                <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center shadow-inner">
+                  <Home size={48} className="text-white drop-shadow-lg" />
+                </div>
+              </div>
+              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                <span className="text-white font-bold text-lg tracking-wider drop-shadow-lg">
+                  HOME
+                </span>
               </div>
             </div>
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-              <span className="text-white font-bold text-lg tracking-wider drop-shadow-lg">
-                HOME
-              </span>
-            </div>
           </div>
-        </div>
+        )}
 
         {/* Room buttons */}
-        {rooms.map((room) => {
-          const position = getRoomPosition(room.angle)
+        {rooms.map((room, index) => {
+          const position = selectedRoom ? getRoomPositionVertical(index) : getRoomPosition(room.angle)
           const isSelected = selectedRoom === room.id
           const isHovered = hoveredRoom === room.id
 
@@ -194,11 +214,33 @@ export default function HouseMindMap() {
 
         {/* Selected room info */}
         {selectedRoom && (
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
             <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg px-6 py-3 shadow-xl border border-white border-opacity-20">
-              <p className="text-white text-center font-medium">
-                Selected: <span className="font-bold">{rooms.find(r => r.id === selectedRoom)?.name}</span>
-              </p>
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-white text-center font-medium">
+                  Selected: <span className="font-bold">{rooms.find(r => r.id === selectedRoom)?.name}</span>
+                </p>
+                <button
+                  onClick={() => setSelectedRoom(null)}
+                  className="p-1 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-colors"
+                  aria-label="Back to home view"
+                >
+                  <Home size={16} className="text-white" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Center content area - appears when room is selected */}
+        {selectedRoom && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-96 h-96 bg-white bg-opacity-5 backdrop-blur-sm rounded-lg border border-white border-opacity-20 flex items-center justify-center">
+              <div className="text-white text-opacity-50 text-center">
+                <div className="text-6xl mb-4">📷</div>
+                <p className="text-lg font-medium">Content Area</p>
+                <p className="text-sm">Images will appear here</p>
+              </div>
             </div>
           </div>
         )}
