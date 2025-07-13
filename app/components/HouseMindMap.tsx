@@ -129,7 +129,7 @@ export default function HouseMindMap() {
 
   return (
     <div className={`${selectedRoom ? 'main-container-expanded' : 'main-container'} p-8 bg-gradient-to-br from-slate-900 via-gray-800 to-slate-900`}>
-      <div className="flex items-center justify-center">
+      <div className={`${selectedRoom ? 'flex items-start justify-center' : 'flex items-center justify-center min-h-screen'}`}>
         <div className="relative">
           <svg
             width="1600"
