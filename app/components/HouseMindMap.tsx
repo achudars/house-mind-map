@@ -20,12 +20,12 @@ interface Room {
 }
 
 const rooms: Room[] = [
-  { id: 'interior', name: 'INTERIOR', icon: <MapPin size={24} />, angle: 0, color: 'bg-blue-500' },
-  { id: 'living', name: 'LIVING ROOM', icon: <Sofa size={24} />, angle: 60, color: 'bg-green-500' },
-  { id: 'bathroom', name: 'BATHROOM', icon: <Bath size={24} />, angle: 120, color: 'bg-cyan-500' },
-  { id: 'exterior', name: 'EXTERIOR', icon: <Trees size={24} />, angle: 180, color: 'bg-emerald-500' },
-  { id: 'kitchen', name: 'KITCHEN', icon: <ChefHat size={24} />, angle: 240, color: 'bg-orange-500' },
-  { id: 'bedroom', name: 'BEDROOM', icon: <Bed size={24} />, angle: 300, color: 'bg-purple-500' },
+  { id: 'interior', name: 'INTERIOR', icon: <MapPin size={24} />, angle: 0, color: 'bg-slate-500' },
+  { id: 'living', name: 'LIVING ROOM', icon: <Sofa size={24} />, angle: 60, color: 'bg-gray-500' },
+  { id: 'bathroom', name: 'BATHROOM', icon: <Bath size={24} />, angle: 120, color: 'bg-zinc-500' },
+  { id: 'exterior', name: 'EXTERIOR', icon: <Trees size={24} />, angle: 180, color: 'bg-neutral-600' },
+  { id: 'kitchen', name: 'KITCHEN', icon: <ChefHat size={24} />, angle: 240, color: 'bg-stone-500' },
+  { id: 'bedroom', name: 'BEDROOM', icon: <Bed size={24} />, angle: 300, color: 'bg-gray-600' },
 ]
 
 export default function HouseMindMap() {
@@ -58,7 +58,7 @@ export default function HouseMindMap() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-slate-900 via-gray-800 to-slate-900">
       <div className="relative">
         <svg
           width="800"
@@ -127,7 +127,7 @@ export default function HouseMindMap() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="relative">
             <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center animate-float">
-              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-inner">
+              <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center shadow-inner">
                 <Home size={48} className="text-white drop-shadow-lg" />
               </div>
             </div>
