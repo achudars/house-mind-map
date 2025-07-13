@@ -74,10 +74,10 @@ export default function HouseMindMap() {
               stroke={selectedRoom === room.id || hoveredRoom === room.id ? '#60a5fa' : '#374151'}
               strokeWidth={selectedRoom === room.id || hoveredRoom === room.id ? '3' : '2'}
               strokeDasharray="5,5"
-              className="transition-all duration-300"
-              style={{
-                opacity: selectedRoom === room.id || hoveredRoom === room.id ? 1 : 0.4,
-              }}
+              className={`transition-all duration-300 ${selectedRoom === room.id || hoveredRoom === room.id
+                ? 'connection-line-active'
+                : 'connection-line-inactive'
+                }`}
             />
           ))}
 
@@ -146,16 +146,17 @@ export default function HouseMindMap() {
           const isHovered = hoveredRoom === room.id
 
           return (
-            <div
+            <button
               key={room.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+              className="room-button"
               style={{
-                left: position.x,
-                top: position.y,
-              }}
+                '--button-left': `${position.x}px`,
+                '--button-top': `${position.y}px`,
+              } as React.CSSProperties}
               onMouseEnter={() => setHoveredRoom(room.id)}
               onMouseLeave={() => setHoveredRoom(null)}
               onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
+              aria-label={`Select ${room.name}`}
             >
               <div className="relative group">
                 <div
@@ -187,13 +188,13 @@ export default function HouseMindMap() {
                   <div className="absolute inset-0 w-20 h-20 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
                 )}
               </div>
-            </div>
+            </button>
           )
         })}
 
         {/* Selected room info */}
         {selectedRoom && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
             <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg px-6 py-3 shadow-xl border border-white border-opacity-20">
               <p className="text-white text-center font-medium">
                 Selected: <span className="font-bold">{rooms.find(r => r.id === selectedRoom)?.name}</span>

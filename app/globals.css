@@ -20,3 +20,29 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   overflow: hidden;
 }
+
+/* Custom styles for house mind map */
+.connection-line-active {
+  opacity: 1;
+}
+
+.connection-line-inactive {
+  opacity: 0.4;
+}
+
+.room-button {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  left: var(--button-left, 0);
+  top: var(--button-top, 0);
+}
+
+.room-button:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+  border-radius: 50%;
+}
