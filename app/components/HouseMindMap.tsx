@@ -7,8 +7,7 @@ import {
   Trees,
   Bath,
   ChefHat,
-  Bed,
-  Sofa
+  Bed
 } from 'lucide-react'
 
 interface Room {
@@ -21,11 +20,10 @@ interface Room {
 
 const rooms: Room[] = [
   { id: 'interior', name: 'INTERIOR', icon: <MapPin size={24} />, angle: 0, color: 'bg-blue-500' },
-  { id: 'living', name: 'LIVING ROOM', icon: <Sofa size={24} />, angle: 45, color: 'bg-green-500' },
-  { id: 'exterior', name: 'EXTERIOR', icon: <Trees size={24} />, angle: 90, color: 'bg-emerald-500' },
-  { id: 'bathroom', name: 'BATHROOM', icon: <Bath size={24} />, angle: 135, color: 'bg-cyan-500' },
+  { id: 'exterior', name: 'EXTERIOR', icon: <Trees size={24} />, angle: 60, color: 'bg-emerald-500' },
+  { id: 'bathroom', name: 'BATHROOM', icon: <Bath size={24} />, angle: 120, color: 'bg-cyan-500' },
   { id: 'kitchen', name: 'KITCHEN', icon: <ChefHat size={24} />, angle: 180, color: 'bg-orange-500' },
-  { id: 'bedroom', name: 'BEDROOM', icon: <Bed size={24} />, angle: 225, color: 'bg-purple-500' },
+  { id: 'bedroom', name: 'BEDROOM', icon: <Bed size={24} />, angle: 240, color: 'bg-purple-500' },
 ]
 
 export default function HouseMindMap() {
