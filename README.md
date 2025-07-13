@@ -2,6 +2,10 @@
 
 A modern, interactive Next.js application featuring a house mind map with a central home icon connected to different room categories.
 
+## Preview
+
+![House Mind Map](house-mind-map.png)
+
 ## Features
 
 - **Modern Design**: Built with Next.js 14, TypeScript, and Tailwind CSS
@@ -21,11 +25,13 @@ A modern, interactive Next.js application featuring a house mind map with a cent
 ## Getting Started
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -43,17 +49,20 @@ npm run dev
 ## Features in Detail
 
 ### Central House Icon
+
 - Floating animation effect
 - Gradient background with shadow
 - Connected to all room buttons via animated lines
 
 ### Room Buttons
+
 - Hover and selection states
 - Smooth scaling animations
 - Color-coded categories
 - Interactive connection lines
 
 ### Modern Styling
+
 - Dark gradient background
 - Glass-morphism effects
 - Responsive design
@@ -62,6 +71,7 @@ npm run dev
 ## Customization
 
 You can easily customize:
+
 - Room categories by modifying the `rooms` array in `HouseMindMap.tsx`
 - Colors and styling in `tailwind.config.js`
 - Animations and layout in the component files
