@@ -17,8 +17,8 @@ body {
 }
 
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  overflow: auto;
 }
 
 /* Custom styles for house mind map */
@@ -47,7 +47,35 @@ body {
   border-radius: 50%;
 }
 
+.room-button-fixed {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  left: var(--button-left, 0);
+  top: var(--button-top, 0);
+  z-index: 40;
+}
+
+.room-button-fixed:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
 .content-area {
-  max-width: 50vw;
+  max-width: 90vw;
   width: auto;
+}
+
+.main-container {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.main-container-expanded {
+  min-height: 200vh;
+  width: 100%;
 }
