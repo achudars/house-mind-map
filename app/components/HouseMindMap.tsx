@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Home,
   MapPin,
@@ -29,6 +30,8 @@ const rooms: Room[] = [
 ]
 
 export default function HouseMindMap() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
   const [roomImages, setRoomImages] = useState<string[]>([])
@@ -36,6 +39,30 @@ export default function HouseMindMap() {
   const centerX = 400
   const centerY = 300
   const radius = 200
+
+  // Initialize selected room from URL parameters
+  useEffect(() => {
+    const roomFromUrl = searchParams.get('room')
+    if (roomFromUrl && rooms.some(room => room.id === roomFromUrl)) {
+      setSelectedRoom(roomFromUrl)
+    }
+  }, [searchParams])
+
+  // Function to update URL when room selection changes
+  const updateRoomSelection = (roomId: string | null) => {
+    setSelectedRoom(roomId)
+
+    // Update URL
+    const params = new URLSearchParams(searchParams.toString())
+    if (roomId) {
+      params.set('room', roomId)
+    } else {
+      params.delete('room')
+    }
+
+    const newUrl = params.toString() ? `?${params.toString()}` : '/'
+    router.push(newUrl, { scroll: false })
+  }
 
   // Function to get images for a specific room
   const getRoomImages = (roomId: string): string[] => {
@@ -204,7 +231,7 @@ export default function HouseMindMap() {
               } as React.CSSProperties}
               onMouseEnter={() => setHoveredRoom(room.id)}
               onMouseLeave={() => setHoveredRoom(null)}
-              onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
+              onClick={() => updateRoomSelection(selectedRoom === room.id ? null : room.id)}
               aria-label={`Select ${room.name}`}
             >
               <div className="relative group">
@@ -250,7 +277,7 @@ export default function HouseMindMap() {
                   Selected: <span className="font-bold">{rooms.find(r => r.id === selectedRoom)?.name}</span>
                 </p>
                 <button
-                  onClick={() => setSelectedRoom(null)}
+                  onClick={() => updateRoomSelection(null)}
                   className="p-1 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-colors"
                   aria-label="Back to home view"
                 >
