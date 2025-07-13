@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Home,
   MapPin,
@@ -31,10 +31,39 @@ const rooms: Room[] = [
 export default function HouseMindMap() {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
+  const [roomImages, setRoomImages] = useState<string[]>([])
 
   const centerX = 400
   const centerY = 300
   const radius = 200
+
+  // Function to get images for a specific room
+  const getRoomImages = (roomId: string): string[] => {
+    const imageMap: Record<string, string[]> = {
+      interior: [
+        '/interior/interior1.jpg',
+        '/interior/interior2.jpg',
+        '/interior/interior3.jpg'
+      ],
+      // Add other rooms here when images are available
+      living: [],
+      bathroom: [],
+      exterior: [],
+      kitchen: [],
+      bedroom: []
+    }
+    return imageMap[roomId] || []
+  }
+
+  // Load images when room is selected
+  React.useEffect(() => {
+    if (selectedRoom) {
+      const images = getRoomImages(selectedRoom)
+      setRoomImages(images)
+    } else {
+      setRoomImages([])
+    }
+  }, [selectedRoom])
 
   // Utility function to ensure consistent rounding and prevent hydration mismatches
   const roundCoordinate = (value: number): number => {
@@ -235,12 +264,26 @@ export default function HouseMindMap() {
         {/* Center content area - appears when room is selected */}
         {selectedRoom && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="w-96 h-96 bg-white bg-opacity-5 backdrop-blur-sm rounded-lg border border-white border-opacity-20 flex items-center justify-center">
-              <div className="text-white text-opacity-50 text-center">
-                <div className="text-6xl mb-4">📷</div>
-                <p className="text-lg font-medium">Content Area</p>
-                <p className="text-sm">Images will appear here</p>
-              </div>
+            <div className="content-area bg-white bg-opacity-5 backdrop-blur-sm rounded-lg border border-white border-opacity-20 p-4 max-h-96 overflow-y-auto">
+              {roomImages.length > 0 ? (
+                <div className="space-y-4">
+                  {roomImages.map((imageSrc, index) => (
+                    <div key={imageSrc} className="w-full">
+                      <img
+                        src={imageSrc}
+                        alt={`${selectedRoom} view ${index + 1}`}
+                        className="w-full h-auto object-cover rounded-lg shadow-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-white text-opacity-50 text-center p-8">
+                  <div className="text-6xl mb-4">📷</div>
+                  <p className="text-lg font-medium">No Images Available</p>
+                  <p className="text-sm">Images for {selectedRoom} will appear here</p>
+                </div>
+              )}
             </div>
           </div>
         )}
