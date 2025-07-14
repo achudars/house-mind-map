@@ -98,14 +98,14 @@ export function ColorPaletteDisplay({ colors, className = '' }: ColorPaletteDisp
 
     if (!colors || colors.length === 0) {
         return (
-            <div className={`w-16 h-40 bg-gray-200 rounded-lg flex items-center justify-center ${className}`}>
+            <div className={`w-16 min-h-40 bg-gray-200 rounded-lg flex items-center justify-center ${className}`}>
                 <span className="text-gray-400 text-xs">No colors</span>
             </div>
         )
     }
 
     return (
-        <div className={`w-16 h-40 rounded-lg overflow-hidden shadow-lg ${className}`}>
+        <div className={`w-16 h-full rounded-lg overflow-hidden shadow-lg flex flex-col ${className}`}>
             {colors.map((color, index) => {
                 const colorKey = `${color[0]}-${color[1]}-${color[2]}-${index}`
                 const hexColor = ColorThief.rgbToHex(color)
@@ -113,7 +113,7 @@ export function ColorPaletteDisplay({ colors, className = '' }: ColorPaletteDisp
                 return (
                     <div
                         key={colorKey}
-                        className={`h-8 w-full transition-all duration-200 hover:scale-105 cursor-pointer`}
+                        className={`flex-1 w-full transition-all duration-200 hover:scale-105 cursor-pointer`}
                         title={`RGB(${color[0]}, ${color[1]}, ${color[2]}) | ${hexColor}`}
                         onClick={() => handleColorClick(color)}
                         onKeyDown={(e) => {
