@@ -114,7 +114,9 @@ export default function HouseMindMap() {
       const extension = config.specialExts?.[i] || config.defaultExt
       const folderName = config.folderOverride || roomId
       const imagePrefix = config.prefixOverride || config.folderOverride || roomId
-      images.push(`/${folderName}/${imagePrefix}${paddedIndex}.${extension}`)
+      const imagePath = `/${folderName}/${imagePrefix}${paddedIndex}.${extension}`
+      console.log(`Generated image path for ${roomId}[${i}]:`, imagePath)
+      images.push(imagePath)
     }
 
     return images

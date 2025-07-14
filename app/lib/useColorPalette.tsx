@@ -59,9 +59,11 @@ export function useColorPalette(imageSrc: string, colorCount: number = 5): Color
                 }
 
                 img.onerror = () => {
+                    console.warn('Failed to load image:', src)
                     setError('Failed to load image')
                     setIsLoading(false)
-                    reject(new Error('Image load failed'))
+                    // Don't reject the promise to avoid crashing the app
+                    resolve()
                 }
 
                 img.src = src

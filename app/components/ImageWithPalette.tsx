@@ -37,8 +37,8 @@ export function ImageWithPalette({ imageSrc, alt, roomName, index }: ImageWithPa
                             </div>
                         )}
                         {error && (
-                            <div className="w-16 bg-red-100 rounded-lg flex items-center justify-center">
-                                <span className="text-red-400 text-xs">Error</span>
+                            <div className="w-16 bg-yellow-100 rounded-lg flex items-center justify-center" title={`Image: ${imageSrc}`}>
+                                <span className="text-yellow-600 text-xs">⚠️</span>
                             </div>
                         )}
                         {!isLoading && !error && (
