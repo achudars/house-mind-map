@@ -271,15 +271,15 @@ export default function HouseMindMap() {
 
           {/* Selected room info */}
           {selectedRoom && (
-            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="bg-slate-900/80 backdrop-blur-md rounded-lg px-6 py-3 shadow-xl border border-white/40">
-                <div className="flex items-center justify-between gap-4">
+            <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+              <div className="bg-slate-900/80 backdrop-blur-md rounded-lg px-10 py-5 shadow-xl border border-white/40 min-h-[20px]">
+                <div className="flex items-center justify-between gap-8">
                   <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
                     Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
                   </p>
                   <button
                     onClick={() => updateRoomSelection(null)}
-                    className="p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                     aria-label="Back to home view"
                   >
                     <Home size={16} className="text-white drop-shadow-lg" />
@@ -291,24 +291,26 @@ export default function HouseMindMap() {
 
           {/* Center content area - appears when room is selected */}
           {selectedRoom && (
-            <div className="absolute top-20 left-1/2 transform -translate-x-1/2">
-              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4">
+            <div className="absolute top-24 left-1/2 transform -translate-x-1/2">
+              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-6">
                 {roomImages.length > 0 ? (
-                  <div className="space-y-4">
+                  <div>
                     {roomImages.map((imageSrc, index) => (
-                      <div key={imageSrc} className="w-full">
-                        <img
-                          src={imageSrc}
-                          alt={`${selectedRoom} view ${index + 1}`}
-                          className="w-full h-auto object-cover rounded-lg shadow-lg"
-                        />
+                      <div key={imageSrc} style={{ margin: '16px' }}>
+                        <div className="w-full">
+                          <img
+                            src={imageSrc}
+                            alt={`${selectedRoom} view ${index + 1}`}
+                            className="w-full h-auto object-cover rounded-lg shadow-lg"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-white/70 text-center p-8">
-                    <div className="text-6xl mb-4">📷</div>
-                    <p className="text-lg font-medium text-white">No Images Available</p>
+                  <div className="text-white/70 text-center p-10">
+                    <div className="text-6xl mb-6">📷</div>
+                    <p className="text-lg font-medium text-white mb-2">No Images Available</p>
                     <p className="text-sm text-white/60">Images for {selectedRoom} will appear here</p>
                   </div>
                 )}
