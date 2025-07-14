@@ -66,24 +66,60 @@ export default function HouseMindMap() {
 
   // Function to get images for a specific room
   const getRoomImages = (roomId: string): string[] => {
-    const imageMap: Record<string, string[]> = {
-      interior: [
-        '/interior/interior1.jpg',
-        '/interior/interior2.jpg',
-        '/interior/interior3.jpg'
-      ],
-      // Add other rooms here when images are available
-      living: [],
-      bathroom: [],
-      exterior: [],
-      kitchen: [],
-      bedroom: []
+    // This would ideally be done server-side or with a build-time script
+    // For now, we'll use the known image counts and generate the paths
+    const imageConfigs: Record<string, { count: number; defaultExt: string; specialExts?: Record<number, string>; folderOverride?: string }> = {
+      interior: {
+        count: 19,
+        defaultExt: 'png',
+        specialExts: { 1: 'jpg', 2: 'jpg', 3: 'jpg', 4: 'jpg', 17: 'jpg' }
+      },
+      exterior: {
+        count: 24,
+        defaultExt: 'png',
+        specialExts: { 1: 'jpg', 2: 'jpg', 4: 'jpg' }
+      },
+      bathroom: {
+        count: 8,
+        defaultExt: 'png',
+        specialExts: { 8: 'jpeg' }
+      },
+      bedroom: {
+        count: 5,
+        defaultExt: 'png',
+        specialExts: { 1: 'jpg', 2: 'jpg' }
+      },
+      kitchen: {
+        count: 11,
+        defaultExt: 'jpg',
+        specialExts: { 1: 'png', 8: 'png', 9: 'png', 10: 'png', 11: 'png' }
+      },
+      living: {
+        count: 5,
+        defaultExt: 'png',
+        specialExts: { 1: 'jpg', 2: 'jpg' },
+        folderOverride: 'bedroom'
+      }
     }
-    return imageMap[roomId] || []
+
+    const config = imageConfigs[roomId]
+    if (!config || config.count === 0) {
+      return []
+    }
+
+    const images: string[] = []
+    for (let i = 1; i <= config.count; i++) {
+      const paddedIndex = i.toString().padStart(2, '0')
+      const extension = config.specialExts?.[i] || config.defaultExt
+      const folderName = config.folderOverride || roomId
+      const imagePrefix = config.folderOverride || roomId
+      images.push(`/${folderName}/${imagePrefix}${paddedIndex}.${extension}`)
+    }
+
+    return images
   }
 
-  // Load images when room is selected
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedRoom) {
       const images = getRoomImages(selectedRoom)
       setRoomImages(images)
