@@ -162,27 +162,36 @@ body {
 @media (max-width: 768px) {
   .room-button-fixed {
     position: fixed;
-    left: 20px !important;
+    left: 8px !important;
     z-index: 50;
     transform: translate(0, -50%);
   }
 
+  /* Smaller navigation circles on mobile */
+  .room-button-fixed .relative .w-14 {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
   .content-area {
-    max-width: calc(100vw - 100px);
-    margin-left: 80px;
+    max-width: calc(100vw - 15px);
+    margin-left: 12px;
     margin-top: 0;
+    padding: 0.25rem;
+    height: 80vh;
+    overflow-y: auto;
   }
 
   .main-container-expanded {
     min-height: 100vh;
-    padding: 1rem;
+    padding: 0.125rem;
   }
 
   .mobile-nav-container {
     position: fixed;
     left: 0;
     top: 80px;
-    width: 80px;
+    width: 15px;
     height: calc(100vh - 80px);
     z-index: 40;
     pointer-events: none;
@@ -197,20 +206,49 @@ body {
     max-width: 100%;
     margin: 0 auto;
   }
+
+  /* Make images take up 80% of device width */
+  .mobile-image-container {
+    width: 80vw;
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 480px) {
   .content-area {
-    max-width: calc(100vw - 80px);
-    margin-left: 60px;
-    padding: 1rem;
+    max-width: calc(100vw - 10px);
+    margin-left: 8px;
+    padding: 0.125rem;
+    height: 85vh;
+    overflow-y: auto;
   }
 
   .room-button-fixed {
-    left: 15px !important;
+    left: 3px !important;
+  }
+
+  /* Even smaller circles on very small screens */
+  .room-button-fixed .relative .w-14 {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
   }
 
   .mobile-nav-container {
-    width: 60px;
+    width: 10px;
+  }
+
+  /* Minimize top info bar on mobile */
+  .fixed.top-6 {
+    top: 0.25rem;
+  }
+
+  .fixed.top-6 .content-padding {
+    padding: 0.25rem 0.75rem;
+  }
+
+  /* Keep 80% width on smaller screens */
+  .mobile-image-container {
+    width: 80vw;
+    margin: 0 auto;
   }
 }

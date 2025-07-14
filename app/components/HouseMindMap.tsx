@@ -161,10 +161,10 @@ export default function HouseMindMap() {
   }
 
   const getRoomPositionVertical = (index: number) => {
-    const verticalSpacing = 120 // Increased spacing for clear separation between circle+text groups
-    const startY = 80 // Start higher up to ensure top button is visible
+    const verticalSpacing = isMobile ? 80 : 120 // Reduced spacing on mobile for smaller circles
+    const startY = isMobile ? 60 : 80 // Start even higher on mobile
     const maxButtons = rooms.length // 6 buttons total
-    const maxHeight = 850 // Increased maximum available height for buttons
+    const maxHeight = isMobile ? 600 : 850 // Reduced available height on mobile
 
     // Calculate adjusted spacing if needed to fit all buttons
     const totalNeededHeight = (maxButtons - 1) * verticalSpacing
@@ -173,7 +173,7 @@ export default function HouseMindMap() {
       : verticalSpacing
 
     return {
-      x: isMobile ? 40 : 280, // Reduced x position for mobile
+      x: isMobile ? 8 : 280, // Even closer to edge on mobile for maximum image width
       y: startY + (index * adjustedSpacing),
     }
   }
@@ -364,7 +364,7 @@ export default function HouseMindMap() {
                 >
                   <div className="relative group">
                     <div
-                      className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
+                      className={`${isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
                         ? 'scale-110 shadow-2xl'
                         : 'scale-100 hover:scale-105'
                         } ${isSelected
@@ -374,7 +374,9 @@ export default function HouseMindMap() {
                     >
                       <div className={`transition-colors duration-300 ${isSelected ? 'text-white' : 'text-gray-700'
                         }`}>
-                        {room.icon}
+                        <div className={isMobile ? 'text-sm' : 'text-xl'}>
+                          {room.icon}
+                        </div>
                       </div>
                     </div>
 
@@ -389,7 +391,7 @@ export default function HouseMindMap() {
 
                     {/* Pulse animation for selected room */}
                     {isSelected && (
-                      <div className="absolute inset-0 w-14 h-14 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
+                      <div className={`absolute inset-0 ${isMobile ? 'w-10 h-10' : 'w-14 h-14'} rounded-full bg-blue-400 opacity-30 animate-ping`}></div>
                     )}
                   </div>
                 </button>
@@ -422,8 +424,8 @@ export default function HouseMindMap() {
 
         {/* Center content area - appears when room is selected */}
         {selectedRoom && (
-          <div className="absolute top-24 left-1/2 transform -translate-x-1/2 md:left-1/2 md:-translate-x-1/2">
-            <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4 md:p-6">
+          <div className={`absolute ${isMobile ? 'top-12' : 'top-24'} left-1/2 transform -translate-x-1/2 md:left-1/2 md:-translate-x-1/2`}>
+            <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-0.5 md:p-4 lg:p-6">
               {roomImages.length > 0 ? (
                 <div>
                   {roomImages.map((imageSrc, index) => (
