@@ -162,7 +162,7 @@ body {
 @media (max-width: 768px) {
   .room-button-fixed {
     position: fixed;
-    left: 8px !important;
+    left: 20px !important;
     z-index: 50;
     transform: translate(0, -50%);
   }
@@ -174,8 +174,8 @@ body {
   }
 
   .content-area {
-    max-width: calc(100vw - 15px);
-    margin-left: 12px;
+    max-width: calc(100vw - 50px);
+    margin-left: 45px;
     margin-top: 0;
     padding: 0.25rem;
     height: 80vh;
@@ -191,7 +191,7 @@ body {
     position: fixed;
     left: 0;
     top: 80px;
-    width: 15px;
+    width: 50px;
     height: calc(100vh - 80px);
     z-index: 40;
     pointer-events: none;
@@ -216,15 +216,15 @@ body {
 
 @media (max-width: 480px) {
   .content-area {
-    max-width: calc(100vw - 10px);
-    margin-left: 8px;
+    max-width: calc(100vw - 45px);
+    margin-left: 40px;
     padding: 0.125rem;
     height: 85vh;
     overflow-y: auto;
   }
 
   .room-button-fixed {
-    left: 3px !important;
+    left: 15px !important;
   }
 
   /* Even smaller circles on very small screens */
@@ -234,7 +234,7 @@ body {
   }
 
   .mobile-nav-container {
-    width: 10px;
+    width: 45px;
   }
 
   /* Minimize top info bar on mobile */
