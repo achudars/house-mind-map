@@ -252,8 +252,8 @@ export default function HouseMindMap() {
                   </div>
 
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                    <span className={`text-sm font-semibold tracking-wide transition-all duration-300 ${isSelected || isHovered
-                      ? 'text-white text-shadow-lg scale-105'
+                    <span className={`text-sm font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
+                      ? 'text-white scale-105'
                       : 'text-gray-300'
                       }`}>
                       {room.name}
@@ -272,17 +272,17 @@ export default function HouseMindMap() {
           {/* Selected room info */}
           {selectedRoom && (
             <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-lg px-6 py-3 shadow-xl border border-white border-opacity-20">
+              <div className="bg-slate-900/80 backdrop-blur-md rounded-lg px-6 py-3 shadow-xl border border-white/40">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="text-white text-center font-medium">
-                    Selected: <span className="font-bold">{rooms.find(r => r.id === selectedRoom)?.name}</span>
+                  <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
+                    Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
                   </p>
                   <button
                     onClick={() => updateRoomSelection(null)}
-                    className="p-1 rounded-full bg-white bg-opacity-20 hover:bg-opacity-30 transition-colors"
+                    className="p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                     aria-label="Back to home view"
                   >
-                    <Home size={16} className="text-white" />
+                    <Home size={16} className="text-white drop-shadow-lg" />
                   </button>
                 </div>
               </div>
@@ -292,7 +292,7 @@ export default function HouseMindMap() {
           {/* Center content area - appears when room is selected */}
           {selectedRoom && (
             <div className="absolute top-20 left-1/2 transform -translate-x-1/2">
-              <div className="content-area bg-white bg-opacity-5 backdrop-blur-sm rounded-lg border border-white border-opacity-20 p-4">
+              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4">
                 {roomImages.length > 0 ? (
                   <div className="space-y-4">
                     {roomImages.map((imageSrc, index) => (
@@ -306,10 +306,10 @@ export default function HouseMindMap() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-white text-opacity-50 text-center p-8">
+                  <div className="text-white/70 text-center p-8">
                     <div className="text-6xl mb-4">📷</div>
-                    <p className="text-lg font-medium">No Images Available</p>
-                    <p className="text-sm">Images for {selectedRoom} will appear here</p>
+                    <p className="text-lg font-medium text-white">No Images Available</p>
+                    <p className="text-sm text-white/60">Images for {selectedRoom} will appear here</p>
                   </div>
                 )}
               </div>
