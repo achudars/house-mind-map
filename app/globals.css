@@ -207,9 +207,9 @@ body {
     margin: 0 auto;
   }
 
-  /* Make images take up 80% of device width */
+  /* Make images take up 60% of device width */
   .mobile-image-container {
-    width: 80vw;
+    width: 60vw;
     margin: 0 auto;
   }
 }
@@ -246,9 +246,9 @@ body {
     padding: 0.25rem 0.75rem;
   }
 
-  /* Keep 80% width on smaller screens */
+  /* Keep 60% width on smaller screens */
   .mobile-image-container {
-    width: 80vw;
+    width: 60vw;
     margin: 0 auto;
   }
 }
