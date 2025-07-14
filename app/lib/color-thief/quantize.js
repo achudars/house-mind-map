@@ -16,7 +16,7 @@ const utils = {
     return 0;
   },
   sum: (array, fn) => array.reduce((p, d, i) => p + (fn ? fn(d, i) : d), 0),
-  max: (array, fn) => Math.max(...(fn ? array.map(fn) : array))
+  max: (array, fn) => Math.max(...(fn ? array.map(fn) : array)),
 };
 
 /**
@@ -77,7 +77,10 @@ class VBox {
 
   volume(force = false) {
     if (!this._volume || force) {
-      this._volume = (this.r2 - this.r1 + 1) * (this.g2 - this.g1 + 1) * (this.b2 - this.b1 + 1);
+      this._volume =
+        (this.r2 - this.r1 + 1) *
+        (this.g2 - this.g1 + 1) *
+        (this.b2 - this.b1 + 1);
     }
     return this._volume;
   }
@@ -99,7 +102,15 @@ class VBox {
   }
 
   copy() {
-    return new VBox(this.r1, this.r2, this.g1, this.g2, this.b1, this.b2, this.histo);
+    return new VBox(
+      this.r1,
+      this.r2,
+      this.g1,
+      this.g2,
+      this.b1,
+      this.b2,
+      this.histo
+    );
   }
 
   avg(force = false) {
@@ -124,12 +135,16 @@ class VBox {
       }
 
       if (ntot) {
-        this._avg = [Math.floor(rsum / ntot), Math.floor(gsum / ntot), Math.floor(bsum / ntot)];
+        this._avg = [
+          Math.floor(rsum / ntot),
+          Math.floor(gsum / ntot),
+          Math.floor(bsum / ntot),
+        ];
       } else {
         this._avg = [
           Math.floor((mult * (this.r1 + this.r2 + 1)) / 2),
           Math.floor((mult * (this.g1 + this.g2 + 1)) / 2),
-          Math.floor((mult * (this.b1 + this.b2 + 1)) / 2)
+          Math.floor((mult * (this.b1 + this.b2 + 1)) / 2),
         ];
       }
     }
@@ -157,19 +172,22 @@ class VBox {
 class CMap {
   constructor() {
     this.vboxes = new PQueue((a, b) =>
-      utils.naturalOrder(a.vbox.count() * a.vbox.volume(), b.vbox.count() * b.vbox.volume())
+      utils.naturalOrder(
+        a.vbox.count() * a.vbox.volume(),
+        b.vbox.count() * b.vbox.volume()
+      )
     );
   }
 
   push(vbox) {
     this.vboxes.push({
       vbox,
-      color: vbox.avg()
+      color: vbox.avg(),
     });
   }
 
   palette() {
-    return this.vboxes.map(vb => vb.color);
+    return this.vboxes.map((vb) => vb.color);
   }
 
   size() {
@@ -225,8 +243,12 @@ function getHisto(pixels) {
   const histo = {};
   let index;
 
-  pixels.forEach(pixel => {
-    index = getColorIndex(pixel[0] >> RSHIFT, pixel[1] >> RSHIFT, pixel[2] >> RSHIFT);
+  pixels.forEach((pixel) => {
+    index = getColorIndex(
+      pixel[0] >> RSHIFT,
+      pixel[1] >> RSHIFT,
+      pixel[2] >> RSHIFT
+    );
     histo[index] = (histo[index] || 0) + 1;
   });
 
@@ -244,7 +266,7 @@ function vboxFromPixels(pixels, histo) {
   let bmin = Infinity,
     bmax = 0;
 
-  pixels.forEach(pixel => {
+  pixels.forEach((pixel) => {
     const rval = pixel[0] >> RSHIFT;
     const gval = pixel[1] >> RSHIFT;
     const bval = pixel[2] >> RSHIFT;
@@ -324,9 +346,14 @@ function medianCutApply(histo, vbox) {
   });
 
   function doCut(color) {
-    const dim1 = color + '1';
-    const dim2 = color + '2';
-    let left, right, vbox1, vbox2, d2, count2 = 0;
+    const dim1 = color + "1";
+    const dim2 = color + "2";
+    let left,
+      right,
+      vbox1,
+      vbox2,
+      d2,
+      count2 = 0;
 
     for (i = vbox[dim1]; i <= vbox[dim2]; i++) {
       if (partialsum[i] > total / 2) {
@@ -354,11 +381,11 @@ function medianCutApply(histo, vbox) {
   }
 
   if (maxw === rw) {
-    return doCut('r');
+    return doCut("r");
   } else if (maxw === gw) {
-    return doCut('g');
+    return doCut("g");
   } else {
-    return doCut('b');
+    return doCut("b");
   }
 }
 
@@ -376,11 +403,11 @@ function quantize(pixels, maxcolors) {
   const nColors = Object.keys(histo).length;
   if (nColors <= maxcolors) {
     const cmap = new CMap();
-    Object.keys(histo).forEach(key => {
+    Object.keys(histo).forEach((key) => {
       const [r, g, b] = [
         (key >> (2 * SIGBITS)) << RSHIFT,
         ((key >> SIGBITS) & ((1 << SIGBITS) - 1)) << RSHIFT,
-        (key & ((1 << SIGBITS) - 1)) << RSHIFT
+        (key & ((1 << SIGBITS) - 1)) << RSHIFT,
       ];
       cmap.push(new VBox(r, r, g, g, b, b, { [key]: histo[key] }));
     });
@@ -445,7 +472,7 @@ function quantize(pixels, maxcolors) {
  * MMCQ object for backward compatibility
  */
 export const MMCQ = {
-  quantize
+  quantize,
 };
 
 export default MMCQ;

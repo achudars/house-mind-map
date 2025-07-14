@@ -9,18 +9,18 @@
  * Uses JavaScript ES6+ features and the canvas API.
  */
 
-import { MMCQ } from './quantize.js';
+import { MMCQ } from "./quantize.js";
 
 /**
  * CanvasImage Factory Function
  * Creates a canvas wrapper for image pixel manipulation
  */
 function createCanvasImage(image) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
 
   // Hide canvas from view
-  canvas.style.display = 'none';
+  canvas.style.display = "none";
   document.body.appendChild(canvas);
 
   // Handle different image types
@@ -45,17 +45,17 @@ function createCanvasImage(image) {
       try {
         return context.getImageData(0, 0, width, height);
       } catch (e) {
-        console.error('Unable to access image data:', e);
+        console.error("Unable to access image data:", e);
         return null;
       }
     },
     clear: () => context.clearRect(0, 0, width, height),
-    update: imageData => context.putImageData(imageData, 0, 0),
+    update: (imageData) => context.putImageData(imageData, 0, 0),
     removeCanvas: () => {
       if (canvas.parentNode) {
         canvas.parentNode.removeChild(canvas);
       }
-    }
+    },
   };
 }
 
@@ -79,7 +79,7 @@ export function getDominantColor(sourceImage, quality = 10) {
  */
 export function getPalette(sourceImage, colorCount = 10, quality = 10) {
   if (!sourceImage?.complete) {
-    console.warn('Image not loaded or invalid');
+    console.warn("Image not loaded or invalid");
     return null;
   }
 
@@ -171,7 +171,7 @@ export function getAverageColor(sourceImage, sampleSize = 10) {
   const avgColor = [
     Math.floor(rgb.r / count),
     Math.floor(rgb.g / count),
-    Math.floor(rgb.b / count)
+    Math.floor(rgb.b / count),
   ];
 
   image.removeCanvas();
@@ -184,7 +184,7 @@ export function getAverageColor(sourceImage, sampleSize = 10) {
  * @returns {string} Hex color string
  */
 export function rgbToHex(rgb) {
-  return `#${rgb.map(c => c.toString(16).padStart(2, '0')).join('')}`;
+  return `#${rgb.map((c) => c.toString(16).padStart(2, "0")).join("")}`;
 }
 
 /**
@@ -193,7 +193,7 @@ export function rgbToHex(rgb) {
  * @returns {number[]} HSL array [h, s, l]
  */
 export function rgbToHsl(rgb) {
-  const [r, g, b] = rgb.map(c => c / 255);
+  const [r, g, b] = rgb.map((c) => c / 255);
 
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
@@ -229,7 +229,7 @@ export const ColorThief = {
   getPalette,
   getAverageColor,
   rgbToHex,
-  rgbToHsl
+  rgbToHsl,
 };
 
 export default ColorThief;
