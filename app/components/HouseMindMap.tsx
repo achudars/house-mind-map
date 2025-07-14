@@ -151,9 +151,12 @@ export default function HouseMindMap() {
 
   const getRoomPosition = (angle: number) => {
     const radian = (angle * Math.PI) / 180
+    // Fixed center coordinates for perfect radial menu centering
+    const fixedCenterX = 400
+    const fixedCenterY = 300
     return {
-      x: roundCoordinate(centerX + radius * Math.cos(radian)),
-      y: roundCoordinate(centerY + radius * Math.sin(radian)),
+      x: roundCoordinate(fixedCenterX + radius * Math.cos(radian)),
+      y: roundCoordinate(fixedCenterY + radius * Math.sin(radian)),
     }
   }
 
@@ -179,11 +182,14 @@ export default function HouseMindMap() {
     const innerRadius = 80
     const outerRadius = radius - 40
     const radian = (angle * Math.PI) / 180
+    // Fixed center coordinates for perfect radial menu centering
+    const fixedCenterX = 400
+    const fixedCenterY = 300
 
-    const startX = roundCoordinate(centerX + innerRadius * Math.cos(radian))
-    const startY = roundCoordinate(centerY + innerRadius * Math.sin(radian))
-    const endX = roundCoordinate(centerX + outerRadius * Math.cos(radian))
-    const endY = roundCoordinate(centerY + outerRadius * Math.sin(radian))
+    const startX = roundCoordinate(fixedCenterX + innerRadius * Math.cos(radian))
+    const startY = roundCoordinate(fixedCenterY + innerRadius * Math.sin(radian))
+    const endX = roundCoordinate(fixedCenterX + outerRadius * Math.cos(radian))
+    const endY = roundCoordinate(fixedCenterY + outerRadius * Math.sin(radian))
 
     return `M ${startX} ${startY} L ${endX} ${endY}`
   }
@@ -191,79 +197,73 @@ export default function HouseMindMap() {
   return (
     <div className={`${selectedRoom ? 'main-container-expanded' : 'main-container'} p-4 md:p-8 min-h-screen`}>
       <div className={`${selectedRoom ? 'flex items-start justify-center' : 'flex items-center justify-center min-h-screen w-full'}`}>
-        <div className="relative w-full flex justify-center">
-          <svg
-            width="100%"
-            height={selectedRoom ? "900" : "600"}
-            viewBox={selectedRoom
-              ? (isMobile ? "0 0 800 900" : "0 0 1600 900")
-              : (isMobile ? "0 0 800 600" : "0 0 1600 600")
-            }
-            className={`drop-shadow-2xl transition-all duration-500 max-w-full ${selectedRoom ? 'svg-container-selected' : 'svg-container'}`}
-          >
-            {/* Connection lines - only show when no room is selected */}
-            {!selectedRoom && rooms.map((room) => (
-              <path
-                key={`line-${room.id}`}
-                d={getConnectionPath(room.angle)}
-                stroke={selectedRoom === room.id || hoveredRoom === room.id ? '#60a5fa' : '#374151'}
-                strokeWidth={selectedRoom === room.id || hoveredRoom === room.id ? '3' : '2'}
-                strokeDasharray="5,5"
-                className={`transition-all duration-300 ${selectedRoom === room.id || hoveredRoom === room.id
-                  ? 'connection-line-active'
-                  : 'connection-line-inactive'
-                  }`}
+        {!selectedRoom ? (
+          // Radial menu container - perfectly centered
+          <div className="radial-menu-container">
+            <svg
+              width="800"
+              height="600"
+              viewBox="0 0 800 600"
+              className="drop-shadow-2xl"
+            >
+              {/* Connection lines */}
+              {rooms.map((room) => (
+                <path
+                  key={`line-${room.id}`}
+                  d={getConnectionPath(room.angle)}
+                  stroke={selectedRoom === room.id || hoveredRoom === room.id ? '#60a5fa' : '#374151'}
+                  strokeWidth={selectedRoom === room.id || hoveredRoom === room.id ? '3' : '2'}
+                  strokeDasharray="5,5"
+                  className={`transition-all duration-300 ${selectedRoom === room.id || hoveredRoom === room.id
+                    ? 'connection-line-active'
+                    : 'connection-line-inactive'
+                    }`}
+                />
+              ))}
+
+              {/* Circular grid */}
+              <circle
+                cx="400"
+                cy="300"
+                r="120"
+                fill="none"
+                stroke="#374151"
+                strokeWidth="1"
+                strokeDasharray="2,4"
+                opacity="0.3"
               />
-            ))}
+              <circle
+                cx="400"
+                cy="300"
+                r="160"
+                fill="none"
+                stroke="#374151"
+                strokeWidth="1"
+                strokeDasharray="2,4"
+                opacity="0.2"
+              />
 
-            {/* Circular grid - only show when no room is selected */}
-            {!selectedRoom && (
-              <>
-                <circle
-                  cx={centerX}
-                  cy={centerY}
-                  r="120"
-                  fill="none"
-                  stroke="#374151"
-                  strokeWidth="1"
-                  strokeDasharray="2,4"
-                  opacity="0.3"
-                />
-                <circle
-                  cx={centerX}
-                  cy={centerY}
-                  r="160"
-                  fill="none"
-                  stroke="#374151"
-                  strokeWidth="1"
-                  strokeDasharray="2,4"
-                  opacity="0.2"
-                />
-              </>
-            )}
+              {/* Small decorative dots */}
+              {rooms.map((room) => {
+                const midRadius = 140
+                const radian = (room.angle * Math.PI) / 180
+                const dotX = roundCoordinate(400 + midRadius * Math.cos(radian))
+                const dotY = roundCoordinate(300 + midRadius * Math.sin(radian))
 
-            {/* Small decorative dots - only show when no room is selected */}
-            {!selectedRoom && rooms.map((room) => {
-              const midRadius = 140
-              const radian = (room.angle * Math.PI) / 180
-              const dotX = roundCoordinate(centerX + midRadius * Math.cos(radian))
-              const dotY = roundCoordinate(centerY + midRadius * Math.sin(radian))
+                return (
+                  <circle
+                    key={`dot-${room.id}`}
+                    cx={dotX}
+                    cy={dotY}
+                    r="3"
+                    fill={hoveredRoom === room.id ? '#60a5fa' : '#6b7280'}
+                    className="transition-all duration-300"
+                  />
+                )
+              })}
+            </svg>
 
-              return (
-                <circle
-                  key={`dot-${room.id}`}
-                  cx={dotX}
-                  cy={dotY}
-                  r="3"
-                  fill={hoveredRoom === room.id ? '#60a5fa' : '#6b7280'}
-                  className="transition-all duration-300"
-                />
-              )
-            })}
-          </svg>
-
-          {/* Central home icon - positioned to match SVG center exactly */}
-          {!selectedRoom && (
+            {/* Central home icon - absolutely centered */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative">
                 <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center animate-float">
@@ -278,110 +278,174 @@ export default function HouseMindMap() {
                 </div>
               </div>
             </div>
-          )}
 
-          {/* Room buttons */}
-          {rooms.map((room, index) => {
-            const position = selectedRoom ? getRoomPositionVertical(index) : getRoomPosition(room.angle)
-            const isSelected = selectedRoom === room.id
-            const isHovered = hoveredRoom === room.id
+            {/* Room buttons */}
+            {rooms.map((room, index) => {
+              const position = getRoomPosition(room.angle)
+              const isSelected = selectedRoom === room.id
+              const isHovered = hoveredRoom === room.id
 
-            return (
-              <button
-                key={room.id}
-                className={selectedRoom ? "room-button-fixed" : "room-button"}
-                style={{
-                  '--button-left': `${position.x}px`,
-                  '--button-top': `${position.y}px`,
-                } as React.CSSProperties}
-                onMouseEnter={() => setHoveredRoom(room.id)}
-                onMouseLeave={() => setHoveredRoom(null)}
-                onClick={() => updateRoomSelection(selectedRoom === room.id ? null : room.id)}
-                aria-label={`Select ${room.name}`}
-              >
-                <div className="relative group">
-                  <div
-                    className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
-                      ? 'scale-110 shadow-2xl'
-                      : 'scale-100 hover:scale-105'
-                      } ${isSelected
-                        ? 'bg-gradient-to-br from-blue-400 to-blue-600 ring-4 ring-blue-300 ring-opacity-50'
-                        : 'bg-white hover:bg-gray-50'
-                      }`}
-                  >
-                    <div className={`transition-colors duration-300 ${isSelected ? 'text-white' : 'text-gray-700'
-                      }`}>
-                      {room.icon}
-                    </div>
-                  </div>
-
-                  <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                    <span className={`text-xs font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
-                      ? 'text-white scale-105'
-                      : 'text-gray-300'
-                      } ${isMobile ? 'hidden' : ''}`}>
-                      {room.name}
-                    </span>
-                  </div>
-
-                  {/* Pulse animation for selected room */}
-                  {isSelected && (
-                    <div className="absolute inset-0 w-14 h-14 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
-                  )}
-                </div>
-              </button>
-            )
-          })}
-
-          {/* Selected room info */}
-          {selectedRoom && (
-            <div className="content-margin">
-              <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-4">
-                <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px] content-padding">
-                  <div className="flex items-center justify-between gap-4 md:gap-8">
-                    <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong text-sm md:text-base">
-                      Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
-                    </p>
-                    <button
-                      onClick={() => updateRoomSelection(null)}
-                      className="p-2 md:p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-                      aria-label="Back to home view"
+              return (
+                <button
+                  key={room.id}
+                  className="room-button"
+                  style={{
+                    '--button-left': `${position.x}px`,
+                    '--button-top': `${position.y}px`,
+                  } as React.CSSProperties}
+                  onMouseEnter={() => setHoveredRoom(room.id)}
+                  onMouseLeave={() => setHoveredRoom(null)}
+                  onClick={() => updateRoomSelection(selectedRoom === room.id ? null : room.id)}
+                  aria-label={`Select ${room.name}`}
+                >
+                  <div className="relative group">
+                    <div
+                      className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
+                        ? 'scale-110 shadow-2xl'
+                        : 'scale-100 hover:scale-105'
+                        } ${isSelected
+                          ? 'bg-gradient-to-br from-blue-400 to-blue-600 ring-4 ring-blue-300 ring-opacity-50'
+                          : 'bg-white hover:bg-gray-50'
+                        }`}
                     >
-                      <Home size={14} className="text-white drop-shadow-lg md:w-4 md:h-4" />
-                    </button>
+                      <div className={`transition-colors duration-300 ${isSelected ? 'text-white' : 'text-gray-700'
+                        }`}>
+                        {room.icon}
+                      </div>
+                    </div>
+
+                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                      <span className={`text-xs font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
+                        ? 'text-white scale-105'
+                        : 'text-gray-300'
+                        }`}>
+                        {room.name}
+                      </span>
+                    </div>
+
+                    {/* Pulse animation for selected room */}
+                    {isSelected && (
+                      <div className="absolute inset-0 w-14 h-14 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
+                    )}
                   </div>
+                </button>
+              )
+            })}
+          </div>
+        ) : (
+          // Selected room layout
+          <div className="relative w-full flex justify-center">
+            <svg
+              width="100%"
+              height="900"
+              viewBox={isMobile ? "0 0 800 900" : "0 0 1600 900"}
+              className={`drop-shadow-2xl transition-all duration-500 max-w-full svg-container-selected`}
+            >
+            </svg>
+
+            {/* Room buttons for selected state */}
+            {rooms.map((room, index) => {
+              const position = getRoomPositionVertical(index)
+              const isSelected = selectedRoom === room.id
+              const isHovered = hoveredRoom === room.id
+
+              return (
+                <button
+                  key={room.id}
+                  className="room-button-fixed"
+                  style={{
+                    '--button-left': `${position.x}px`,
+                    '--button-top': `${position.y}px`,
+                  } as React.CSSProperties}
+                  onMouseEnter={() => setHoveredRoom(room.id)}
+                  onMouseLeave={() => setHoveredRoom(null)}
+                  onClick={() => updateRoomSelection(selectedRoom === room.id ? null : room.id)}
+                  aria-label={`Select ${room.name}`}
+                >
+                  <div className="relative group">
+                    <div
+                      className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
+                        ? 'scale-110 shadow-2xl'
+                        : 'scale-100 hover:scale-105'
+                        } ${isSelected
+                          ? 'bg-gradient-to-br from-blue-400 to-blue-600 ring-4 ring-blue-300 ring-opacity-50'
+                          : 'bg-white hover:bg-gray-50'
+                        }`}
+                    >
+                      <div className={`transition-colors duration-300 ${isSelected ? 'text-white' : 'text-gray-700'
+                        }`}>
+                        {room.icon}
+                      </div>
+                    </div>
+
+                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                      <span className={`text-xs font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
+                        ? 'text-white scale-105'
+                        : 'text-gray-300'
+                        } ${isMobile ? 'hidden' : ''}`}>
+                        {room.name}
+                      </span>
+                    </div>
+
+                    {/* Pulse animation for selected room */}
+                    {isSelected && (
+                      <div className="absolute inset-0 w-14 h-14 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
+                    )}
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Selected room info */}
+        {selectedRoom && (
+          <div className="content-margin">
+            <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-4">
+              <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px] content-padding">
+                <div className="flex items-center justify-between gap-4 md:gap-8">
+                  <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong text-sm md:text-base">
+                    Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
+                  </p>
+                  <button
+                    onClick={() => updateRoomSelection(null)}
+                    className="p-2 md:p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                    aria-label="Back to home view"
+                  >
+                    <Home size={14} className="text-white drop-shadow-lg md:w-4 md:h-4" />
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Center content area - appears when room is selected */}
-          {selectedRoom && (
-            <div className="absolute top-24 left-1/2 transform -translate-x-1/2 md:left-1/2 md:-translate-x-1/2">
-              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4 md:p-6">
-                {roomImages.length > 0 ? (
-                  <div>
-                    {roomImages.map((imageSrc, index) => (
-                      <ImageWithPalette
-                        key={imageSrc}
-                        imageSrc={imageSrc}
-                        alt={`${selectedRoom} view ${index + 1}`}
-                        roomName={selectedRoom}
-                        index={index}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-white/70 text-center p-6 md:p-10">
-                    <div className="text-4xl md:text-6xl mb-4 md:mb-6">📷</div>
-                    <p className="text-base md:text-lg font-medium text-white mb-2">No Images Available</p>
-                    <p className="text-xs md:text-sm text-white/60">Images for {selectedRoom} will appear here</p>
-                  </div>
-                )}
-              </div>
+        {/* Center content area - appears when room is selected */}
+        {selectedRoom && (
+          <div className="absolute top-24 left-1/2 transform -translate-x-1/2 md:left-1/2 md:-translate-x-1/2">
+            <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4 md:p-6">
+              {roomImages.length > 0 ? (
+                <div>
+                  {roomImages.map((imageSrc, index) => (
+                    <ImageWithPalette
+                      key={imageSrc}
+                      imageSrc={imageSrc}
+                      alt={`${selectedRoom} view ${index + 1}`}
+                      roomName={selectedRoom}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-white/70 text-center p-6 md:p-10">
+                  <div className="text-4xl md:text-6xl mb-4 md:mb-6">📷</div>
+                  <p className="text-base md:text-lg font-medium text-white mb-2">No Images Available</p>
+                  <p className="text-xs md:text-sm text-white/60">Images for {selectedRoom} will appear here</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
