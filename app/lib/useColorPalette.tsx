@@ -105,33 +105,44 @@ export function ColorPaletteDisplay({ colors, className = '' }: ColorPaletteDisp
     }
 
     return (
-        <div className={`w-16 h-full rounded-lg overflow-hidden shadow-lg flex flex-col ${className}`}>
+        <div className={`w-16 h-full rounded-lg shadow-lg flex flex-col gap-2 py-1 ${className}`}>
             {colors.map((color, index) => {
                 const colorKey = `${color[0]}-${color[1]}-${color[2]}-${index}`
                 const hexColor = ColorThief.rgbToHex(color)
 
+                // Calculate luminance to determine text color (white or black)
+                const luminance = (0.299 * color[0] + 0.587 * color[1] + 0.114 * color[2]) / 255
+                const textColor = luminance > 0.5 ? '#000000' : '#FFFFFF'
+
                 return (
-                    <div
-                        key={colorKey}
-                        className={`flex-1 w-full transition-all duration-200 hover:scale-105 cursor-pointer`}
-                        title={`RGB(${color[0]}, ${color[1]}, ${color[2]}) | ${hexColor}`}
-                        onClick={() => handleColorClick(color)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault()
-                                handleColorClick(color)
-                            }
-                        }}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`Color ${hexColor}, click to copy`}
-                    >
+                    <div key={colorKey} className="flex-1 min-h-0">
                         <div
-                            className="w-full h-full rounded-sm"
+                            className={`w-full h-full cursor-pointer rounded-sm flex items-center justify-center`}
+                            title={`RGB(${color[0]}, ${color[1]}, ${color[2]}) | ${hexColor}`}
+                            onClick={() => handleColorClick(color)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault()
+                                    handleColorClick(color)
+                                }
+                            }}
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`Color ${hexColor}, click to copy`}
                             style={{
                                 backgroundColor: `rgb(${color[0]}, ${color[1]}, ${color[2]})`,
                             }}
-                        />
+                        >
+                            <span
+                                className="text-xs font-bold text-center leading-tight px-1"
+                                style={{
+                                    color: textColor,
+                                    textShadow: textColor === '#FFFFFF' ? '0 1px 2px rgba(0,0,0,0.5)' : '0 1px 2px rgba(255,255,255,0.5)'
+                                }}
+                            >
+                                {hexColor}
+                            </span>
+                        </div>
                     </div>
                 )
             })}
