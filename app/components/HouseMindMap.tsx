@@ -36,10 +36,23 @@ export default function HouseMindMap() {
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
   const [roomImages, setRoomImages] = useState<string[]>([])
+  const [isMobile, setIsMobile] = useState(false)
 
-  const centerX = 800  // Doubled from 400 to 800
+  // Dynamic center coordinates based on viewport
+  const centerX = isMobile ? 400 : 800  // Adjusted for mobile vs desktop
   const centerY = 300
   const radius = 200
+
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Initialize selected room from URL parameters
   useEffect(() => {
@@ -157,7 +170,7 @@ export default function HouseMindMap() {
       : verticalSpacing
 
     return {
-      x: 280, // Adjusted for wider canvas - moved further right
+      x: isMobile ? 40 : 280, // Reduced x position for mobile
       y: startY + (index * adjustedSpacing),
     }
   }
@@ -176,14 +189,17 @@ export default function HouseMindMap() {
   }
 
   return (
-    <div className={`${selectedRoom ? 'main-container-expanded' : 'main-container'} p-8 min-h-screen`}>
-      <div className={`${selectedRoom ? 'flex items-start justify-center' : 'flex items-center justify-center min-h-screen'}`}>
-        <div className="relative">
+    <div className={`${selectedRoom ? 'main-container-expanded' : 'main-container'} p-4 md:p-8 min-h-screen`}>
+      <div className={`${selectedRoom ? 'flex items-start justify-center' : 'flex items-center justify-center min-h-screen w-full'}`}>
+        <div className="relative w-full flex justify-center">
           <svg
-            width="1600"
+            width="100%"
             height={selectedRoom ? "900" : "600"}
-            viewBox={selectedRoom ? "0 0 1600 900" : "0 0 1600 600"}
-            className="drop-shadow-2xl transition-all duration-500"
+            viewBox={selectedRoom
+              ? (isMobile ? "0 0 800 900" : "0 0 1600 900")
+              : (isMobile ? "0 0 800 600" : "0 0 1600 600")
+            }
+            className={`drop-shadow-2xl transition-all duration-500 max-w-full ${selectedRoom ? 'svg-container-selected' : 'svg-container'}`}
           >
             {/* Connection lines - only show when no room is selected */}
             {!selectedRoom && rooms.map((room) => (
@@ -246,9 +262,9 @@ export default function HouseMindMap() {
             })}
           </svg>
 
-          {/* Central home icon - only show when no room is selected */}
+          {/* Central home icon - positioned to match SVG center exactly */}
           {!selectedRoom && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative">
                 <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center animate-float">
                   <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center shadow-inner">
@@ -303,7 +319,7 @@ export default function HouseMindMap() {
                     <span className={`text-xs font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
                       ? 'text-white scale-105'
                       : 'text-gray-300'
-                      }`}>
+                      } ${isMobile ? 'hidden' : ''}`}>
                       {room.name}
                     </span>
                   </div>
@@ -320,18 +336,18 @@ export default function HouseMindMap() {
           {/* Selected room info */}
           {selectedRoom && (
             <div className="content-margin">
-              <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+              <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 px-4">
                 <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px] content-padding">
-                  <div className="flex items-center justify-between gap-8">
-                    <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
+                  <div className="flex items-center justify-between gap-4 md:gap-8">
+                    <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong text-sm md:text-base">
                       Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
                     </p>
                     <button
                       onClick={() => updateRoomSelection(null)}
-                      className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                      className="p-2 md:p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                       aria-label="Back to home view"
                     >
-                      <Home size={16} className="text-white drop-shadow-lg" />
+                      <Home size={14} className="text-white drop-shadow-lg md:w-4 md:h-4" />
                     </button>
                   </div>
                 </div>
@@ -341,8 +357,8 @@ export default function HouseMindMap() {
 
           {/* Center content area - appears when room is selected */}
           {selectedRoom && (
-            <div className="absolute top-24 left-1/2 transform -translate-x-1/2">
-              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-6">
+            <div className="absolute top-24 left-1/2 transform -translate-x-1/2 md:left-1/2 md:-translate-x-1/2">
+              <div className="content-area bg-slate-900/30 backdrop-blur-sm rounded-lg border border-white/30 p-4 md:p-6">
                 {roomImages.length > 0 ? (
                   <div>
                     {roomImages.map((imageSrc, index) => (
@@ -356,10 +372,10 @@ export default function HouseMindMap() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-white/70 text-center p-10">
-                    <div className="text-6xl mb-6">📷</div>
-                    <p className="text-lg font-medium text-white mb-2">No Images Available</p>
-                    <p className="text-sm text-white/60">Images for {selectedRoom} will appear here</p>
+                  <div className="text-white/70 text-center p-6 md:p-10">
+                    <div className="text-4xl md:text-6xl mb-4 md:mb-6">📷</div>
+                    <p className="text-base md:text-lg font-medium text-white mb-2">No Images Available</p>
+                    <p className="text-xs md:text-sm text-white/60">Images for {selectedRoom} will appear here</p>
                   </div>
                 )}
               </div>

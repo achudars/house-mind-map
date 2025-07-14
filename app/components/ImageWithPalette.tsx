@@ -15,11 +15,11 @@ export function ImageWithPalette({ imageSrc, alt, roomName, index }: ImageWithPa
 
     return (
         <div
-            className="mb-6 p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 shadow-lg"
+            className="mb-6 p-4 md:p-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 shadow-lg"
             style={{ margin: '12px', padding: '12px' }}
         >
             <div style={{ margin: '2px 0' }}>
-                <div className="flex gap-6 items-stretch" style={{ gap: '12px' }}>
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-stretch" style={{ gap: '12px' }}>
                     <div className="flex-1" style={{ flex: 1 }}>
                         <div style={{ margin: '0', padding: '12px', backgroundColor: 'rgba(255,255,255,0.05)' }}>
                             <img
@@ -30,7 +30,7 @@ export function ImageWithPalette({ imageSrc, alt, roomName, index }: ImageWithPa
                             />
                         </div>
                     </div>
-                    <div className="flex-shrink-0 flex">
+                    <div className="flex-shrink-0 flex w-full md:w-auto justify-center md:justify-start">
                         {isLoading && (
                             <div className="w-16 bg-gray-200 rounded-lg flex items-center justify-center animate-pulse">
                                 <span className="text-gray-400 text-xs">Loading...</span>
@@ -44,7 +44,7 @@ export function ImageWithPalette({ imageSrc, alt, roomName, index }: ImageWithPa
                         {!isLoading && !error && (
                             <ColorPaletteDisplay
                                 colors={colors}
-                                className="ml-4 flex-1"
+                                className="ml-0 md:ml-4 flex-1"
                             />
                         )}
                     </div>
