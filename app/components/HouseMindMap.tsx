@@ -69,7 +69,7 @@ export default function HouseMindMap() {
   const getRoomImages = (roomId: string): string[] => {
     // This would ideally be done server-side or with a build-time script
     // For now, we'll use the known image counts and generate the paths
-    const imageConfigs: Record<string, { count: number; defaultExt: string; specialExts?: Record<number, string>; folderOverride?: string }> = {
+    const imageConfigs: Record<string, { count: number; defaultExt: string; specialExts?: Record<number, string>; folderOverride?: string; prefixOverride?: string }> = {
       interior: {
         count: 19,
         defaultExt: 'png',
@@ -98,8 +98,8 @@ export default function HouseMindMap() {
       living: {
         count: 5,
         defaultExt: 'png',
-        specialExts: { 1: 'jpg', 2: 'jpg' },
-        folderOverride: 'bedroom'
+        folderOverride: 'living-room',
+        prefixOverride: 'interior'
       }
     }
 
@@ -113,7 +113,7 @@ export default function HouseMindMap() {
       const paddedIndex = i.toString().padStart(2, '0')
       const extension = config.specialExts?.[i] || config.defaultExt
       const folderName = config.folderOverride || roomId
-      const imagePrefix = config.folderOverride || roomId
+      const imagePrefix = config.prefixOverride || config.folderOverride || roomId
       images.push(`/${folderName}/${imagePrefix}${paddedIndex}.${extension}`)
     }
 
