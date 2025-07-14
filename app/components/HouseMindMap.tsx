@@ -143,11 +143,20 @@ export default function HouseMindMap() {
   }
 
   const getRoomPositionVertical = (index: number) => {
-    const verticalSpacing = 140 // Increased spacing for better text visibility
-    const startY = 120 // Moved up slightly to fit better
+    const verticalSpacing = 120 // Increased spacing for clear separation between circle+text groups
+    const startY = 80 // Start higher up to ensure top button is visible
+    const maxButtons = rooms.length // 6 buttons total
+    const maxHeight = 850 // Increased maximum available height for buttons
+    
+    // Calculate adjusted spacing if needed to fit all buttons
+    const totalNeededHeight = (maxButtons - 1) * verticalSpacing
+    const adjustedSpacing = totalNeededHeight > maxHeight 
+      ? Math.floor(maxHeight / (maxButtons - 1)) 
+      : verticalSpacing
+    
     return {
       x: 280, // Adjusted for wider canvas - moved further right
-      y: startY + (index * verticalSpacing),
+      y: startY + (index * adjustedSpacing),
     }
   }
 
@@ -274,7 +283,7 @@ export default function HouseMindMap() {
               >
                 <div className="relative group">
                   <div
-                    className={`w-20 h-20 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
+                    className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform ${isSelected || isHovered
                       ? 'scale-110 shadow-2xl'
                       : 'scale-100 hover:scale-105'
                       } ${isSelected
@@ -288,8 +297,8 @@ export default function HouseMindMap() {
                     </div>
                   </div>
 
-                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                    <span className={`text-sm font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
+                  <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                    <span className={`text-xs font-semibold tracking-wide transition-all duration-300 drop-shadow-lg ${isSelected || isHovered
                       ? 'text-white scale-105'
                       : 'text-gray-300'
                       }`}>
@@ -299,7 +308,7 @@ export default function HouseMindMap() {
 
                   {/* Pulse animation for selected room */}
                   {isSelected && (
-                    <div className="absolute inset-0 w-20 h-20 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
+                    <div className="absolute inset-0 w-14 h-14 rounded-full bg-blue-400 opacity-30 animate-ping"></div>
                   )}
                 </div>
               </button>
