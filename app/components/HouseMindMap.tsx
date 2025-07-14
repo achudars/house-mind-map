@@ -147,13 +147,13 @@ export default function HouseMindMap() {
     const startY = 80 // Start higher up to ensure top button is visible
     const maxButtons = rooms.length // 6 buttons total
     const maxHeight = 850 // Increased maximum available height for buttons
-    
+
     // Calculate adjusted spacing if needed to fit all buttons
     const totalNeededHeight = (maxButtons - 1) * verticalSpacing
-    const adjustedSpacing = totalNeededHeight > maxHeight 
-      ? Math.floor(maxHeight / (maxButtons - 1)) 
+    const adjustedSpacing = totalNeededHeight > maxHeight
+      ? Math.floor(maxHeight / (maxButtons - 1))
       : verticalSpacing
-    
+
     return {
       x: 280, // Adjusted for wider canvas - moved further right
       y: startY + (index * adjustedSpacing),
