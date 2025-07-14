@@ -60,6 +60,18 @@ body {
   top: var(--button-top, 0);
 }
 
+.color-swatch {
+  background-color: var(--swatch-color, #cccccc);
+}
+
+.content-margin {
+  margin: 16px;
+}
+
+.content-padding {
+  padding: 20px 24px;
+}
+
 .room-button:focus {
   outline: 2px solid #60a5fa;
   outline-offset: 2px;

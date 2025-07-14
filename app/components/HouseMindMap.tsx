@@ -11,6 +11,7 @@ import {
   Bed,
   Sofa
 } from 'lucide-react'
+import { ImageWithPalette } from './ImageWithPalette'
 
 interface Room {
   id: string
@@ -307,9 +308,9 @@ export default function HouseMindMap() {
 
           {/* Selected room info */}
           {selectedRoom && (
-            <div style={{ margin: '16px' }}>
+            <div className="content-margin">
               <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
-                <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px]" style={{ padding: '20px 24px' }}>
+                <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px] content-padding">
                   <div className="flex items-center justify-between gap-8">
                     <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
                       Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
@@ -334,15 +335,13 @@ export default function HouseMindMap() {
                 {roomImages.length > 0 ? (
                   <div>
                     {roomImages.map((imageSrc, index) => (
-                      <div key={imageSrc} style={{ margin: '16px' }}>
-                        <div className="w-full">
-                          <img
-                            src={imageSrc}
-                            alt={`${selectedRoom} view ${index + 1}`}
-                            className="w-full h-auto object-cover rounded-lg shadow-lg"
-                          />
-                        </div>
-                      </div>
+                      <ImageWithPalette
+                        key={imageSrc}
+                        imageSrc={imageSrc}
+                        alt={`${selectedRoom} view ${index + 1}`}
+                        roomName={selectedRoom}
+                        index={index}
+                      />
                     ))}
                   </div>
                 ) : (
