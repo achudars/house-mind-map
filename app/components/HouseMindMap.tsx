@@ -271,19 +271,21 @@ export default function HouseMindMap() {
 
           {/* Selected room info */}
           {selectedRoom && (
-            <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="bg-slate-900/80 backdrop-blur-md rounded-lg px-10 py-5 shadow-xl border border-white/40 min-h-[20px]">
-                <div className="flex items-center justify-between gap-8">
-                  <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
-                    Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
-                  </p>
-                  <button
-                    onClick={() => updateRoomSelection(null)}
-                    className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-                    aria-label="Back to home view"
-                  >
-                    <Home size={16} className="text-white drop-shadow-lg" />
-                  </button>
+            <div style={{ margin: '16px' }}>
+              <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+                <div className="bg-slate-900/80 backdrop-blur-md rounded-lg shadow-xl border border-white/40 min-h-[20px]" style={{ padding: '20px 24px' }}>
+                  <div className="flex items-center justify-between gap-8">
+                    <p className="text-white text-center font-medium drop-shadow-lg text-shadow-strong">
+                      Selected: <span className="font-bold text-white">{rooms.find(r => r.id === selectedRoom)?.name}</span>
+                    </p>
+                    <button
+                      onClick={() => updateRoomSelection(null)}
+                      className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                      aria-label="Back to home view"
+                    >
+                      <Home size={16} className="text-white drop-shadow-lg" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
