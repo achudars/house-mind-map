@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
-    "lucide-react": "^0.532.0",
-    "next": "15.4.4",
+    "lucide-react": "^0.534.0",
+    "next": "15.4.5",
     "react": "^19",
     "react-dom": "^19"
   },
@@ -21,7 +21,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
-    "eslint-config-next": "15.4.4",
+    "eslint-config-next": "15.4.5",
     "postcss": "^8",
     "tailwindcss": "^4.1.11",
     "typescript": "^5"
